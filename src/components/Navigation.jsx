@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Dock, DockIcon } from "./Dock";
 import { scrollToSection } from "../utils/scrollUtils";
+import HomeIcon from "./icons/HomeIcon";
+import FolderIcon from "./icons/FolderIcon";
+import InfoIcon from "./icons/InfoIcon";
+import MessageIcon from "./icons/MessageIcon";
 
 const labels = [
   { text: "Accueil" },
@@ -59,26 +63,18 @@ export function Navigation() {
         </span>
         <a href="#home" onClick={(e) => handleNavClick('home', e)}>
           <DockIcon className={activeSection === 'home' ? 'ring-2 ring-eminence-400 dark:ring-skyblue-400 ring-offset-2 ring-offset-white dark:ring-offset-skyblue-950' : ''}>
-            {hoveredIcon === 'home' ? (
-              <img 
-                src="/icons8-home.gif" 
-                alt="Accueil" 
-                className="w-7 h-7" 
-                style={{ 
-                  mixBlendMode: 'multiply',
-                  filter: 'contrast(1.1)'
-                }}
-              />
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="32" height="32" viewBox="0 0 48 48" className="w-7 h-7">
-                <path fill="#E8EAF6" d="M42 39L6 39 6 23 24 6 42 23z"></path>
-                <path fill="#C5CAE9" d="M39 21L34 16 34 9 39 9zM6 39H42V44H6z"></path>
-                <path fill="#B71C1C" d="M24 4.3L4 22.9 6 25.1 24 8.4 42 25.1 44 22.9z"></path>
-                <path fill="#D84315" d="M18 28H30V44H18z"></path>
-                <path fill="#01579B" d="M21 17H27V23H21z"></path>
-                <path fill="#FF8A65" d="M27.5,35.5c-0.3,0-0.5,0.2-0.5,0.5v2c0,0.3,0.2,0.5,0.5,0.5S28,38.3,28,38v-2C28,35.7,27.8,35.5,27.5,35.5z"></path>
-              </svg>
-            )}
+            <span
+              className={`transition-transform duration-300 ${hoveredIcon === 'home' ? 'scale-110' : ''}`}
+              style={{
+                filter: hoveredIcon === 'home'
+                  ? 'drop-shadow(0 0 12px #C45DD8) brightness(1.15)'
+                  : 'none',
+                transition: 'filter 0.3s, transform 0.3s cubic-bezier(.4,2,.6,1)',
+                display: 'inline-block'
+              }}
+            >
+              <HomeIcon className="w-7 h-7" />
+            </span>
           </DockIcon>
         </a>
       </div>
@@ -95,14 +91,18 @@ export function Navigation() {
         </span>
         <a href="#about" onClick={(e) => handleNavClick('about', e)}>
           <DockIcon className={activeSection === 'about' ? 'ring-2 ring-eminence-400 dark:ring-skyblue-400 ring-offset-2 ring-offset-white dark:ring-offset-skyblue-950' : ''}>
-            <img 
-              src="https://img.icons8.com/color/48/info--v1.png" 
-              alt="About" 
-              className="w-7 h-7"
-              style={{ 
-                mixBlendMode: 'multiply'
+            <span
+              className={`transition-transform duration-300 ${hoveredIcon === 'about' ? 'scale-110' : ''}`}
+              style={{
+                filter: hoveredIcon === 'about'
+                  ? 'drop-shadow(0 0 12px #C45DD8) brightness(1.15)'
+                  : 'none',
+                transition: 'filter 0.3s, transform 0.3s cubic-bezier(.4,2,.6,1)',
+                display: 'inline-block'
               }}
-            />
+            >
+              <InfoIcon className="w-7 h-7" />
+            </span>
           </DockIcon>
         </a>
       </div>
@@ -119,26 +119,18 @@ export function Navigation() {
         </span>
         <a href="#projects" onClick={(e) => handleNavClick('projects', e)}>
           <DockIcon className={activeSection === 'projects' ? 'ring-2 ring-eminence-400 dark:ring-skyblue-400 ring-offset-2 ring-offset-white dark:ring-offset-skyblue-950' : ''}>
-            {hoveredIcon === 'projects' ? (
-              <img 
-                src="/icons8-folder.gif" 
-                alt="Projects" 
-                className="w-7 h-7" 
-                style={{ 
-                  mixBlendMode: 'multiply',
-                  filter: 'contrast(1.1)'
-                }}
-              />
-            ) : (
-              <img 
-                src="https://img.icons8.com/color/48/folder-invoices--v1.png" 
-                alt="Projects" 
-                className="w-7 h-7"
-                style={{ 
-                  mixBlendMode: 'multiply'
-                }}
-              />
-            )}
+            <span
+              className={`transition-transform duration-300 ${hoveredIcon === 'projects' ? 'scale-110' : ''}`}
+              style={{
+                filter: hoveredIcon === 'projects'
+                  ? 'drop-shadow(0 0 12px #0EA5E9) brightness(1.12)'
+                  : 'none',
+                transition: 'filter 0.3s, transform 0.3s cubic-bezier(.4,2,.6,1)',
+                display: 'inline-block'
+              }}
+            >
+              <FolderIcon className="w-7 h-7" />
+            </span>
           </DockIcon>
         </a>
       </div>
@@ -155,14 +147,18 @@ export function Navigation() {
         </span>
         <a href="#contact" onClick={(e) => handleNavClick('contact', e)}>
           <DockIcon className={activeSection === 'contact' ? 'ring-2 ring-eminence-400 dark:ring-skyblue-400 ring-offset-2 ring-offset-white dark:ring-offset-skyblue-950' : ''}>
-            <img 
-              src="https://img.icons8.com/color/48/filled-message.png" 
-              alt="Contact" 
-              className="w-7 h-7"
-              style={{ 
-                mixBlendMode: 'multiply'
+            <span
+              className={`transition-transform duration-300 ${hoveredIcon === 'contact' ? 'scale-110' : ''}`}
+              style={{
+                filter: hoveredIcon === 'contact'
+                  ? 'drop-shadow(0 0 12px #C45DD8) brightness(1.15)'
+                  : 'none',
+                transition: 'filter 0.3s, transform 0.3s cubic-bezier(.4,2,.6,1)',
+                display: 'inline-block'
               }}
-            />
+            >
+              <MessageIcon className="w-7 h-7" />
+            </span>
           </DockIcon>
         </a>
       </div>

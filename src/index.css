@@ -216,3 +216,26 @@ body {
   border: 1px solid rgba(51, 65, 85, 0.35);
   box-shadow: 0 8px 32px 0 rgba(2, 6, 23, 0.4);
 }
+
+/* Professional glass card effect for About section cards */
+.glass-card {
+  background: rgba(255,255,255,0.55);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(196,93,216,0.10);
+  transition: box-shadow 0.3s, border 0.3s, transform 0.3s;
+}
+.dark .glass-card {
+  background: rgba(15,23,42,0.75);
+  box-shadow: 0 8px 32px 0 rgba(2, 6, 23, 0.25);
+  border: 1.5px solid rgba(148,163,184,0.10);
+}
+.glass-card:hover {
+  box-shadow: 0 4px 32px 0 rgba(196,93,216,0.18), 0 1.5px 8px 0 rgba(14,165,233,0.10);
+  border: 1.5px solid #C45DD8;
+  transform: translateY(-4px) scale(1.03);
+}
+.card-border-anim {
+  transition: border 0.3s, box-shadow 0.3s;
+}

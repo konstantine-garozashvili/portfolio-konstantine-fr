@@ -25,11 +25,16 @@ export const Dock = ({ children }) => {
   );
 };
 
-export const DockIcon = ({ children, className = "" }) => {
+export const DockIcon = ({ children, className = "", noBg = false }) => {
   const { theme } = useTheme();
   
   return (
-    <div className={`w-14 h-14 flex items-center justify-center rounded-full transition-all hover:scale-110 bg-gradient-to-br from-skyblue-100/90 to-white/80 dark:from-slate-700/60 dark:to-slate-800/60 ${className}`}
+    <div
+      className={`w-14 h-14 flex items-center justify-center rounded-full transition-all hover:scale-110 ${
+        noBg
+          ? ''
+          : 'bg-gradient-to-br from-skyblue-100/90 to-white/80 dark:from-slate-700/60 dark:to-slate-800/60'
+      } ${className}`}
       style={{
         boxShadow: theme === 'dark'
           ? '0 4px 10px -2px rgba(15, 23, 42, 0.3)'
@@ -38,6 +43,7 @@ export const DockIcon = ({ children, className = "" }) => {
           ? '1px solid rgba(51, 65, 85, 0.5)'
           : '1px solid rgba(255, 255, 255, 0.4)',
         backdropFilter: 'blur(5px)',
+        background: noBg ? 'none' : undefined,
       }}
     >
       {children}

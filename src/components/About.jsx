@@ -204,6 +204,135 @@ const ProfileCanvas = ({ theme: initialTheme }) => {
   );
 };
 
+// Newly enhanced AnimatedSkillCard component
+const AnimatedSkillCard = ({ skill, index }) => {
+  const { theme } = useTheme();
+  const [isHovered, setIsHovered] = useState(false);
+  
+  // Calculate delay based on index for staggered animation
+  const delay = `${index * 0.1}s`;
+  
+  return (
+    <div 
+      className={`group relative overflow-hidden rounded-2xl transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${
+        isHovered ? 'z-10' : 'z-0'
+      }`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{ animationDelay: delay }}
+    >
+      {/* Background with animated gradient border */}
+      <div className="absolute inset-0 bg-gradient-to-br from-eminence-400 via-eminence-300 to-eminence-500 dark:from-slate-500 dark:via-slate-600 dark:to-slate-700 opacity-80 animate-gradient-xy"></div>
+      
+      {/* Inner content with glass effect */}
+      <div className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md m-0.5 p-6 h-full rounded-2xl flex flex-col items-center justify-center transition-all duration-300">
+        {/* Icon container with glow effect - Fixed background for transparent icons */}
+        <div className={`w-20 h-20 rounded-2xl flex items-center justify-center mb-4 shadow-md transition-all duration-300 ${
+          isHovered ? 'shadow-eminence-300/50 dark:shadow-slate-500/50' : ''
+        }`} style={{
+          background: theme === 'dark' 
+            ? 'linear-gradient(to bottom right, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8))' 
+            : 'linear-gradient(to bottom right, rgba(255, 255, 255, 0.9), rgba(245, 243, 255, 0.9))'
+        }}>
+          <div className={`relative ${isHovered ? 'animate-pulse-slow' : ''}`}>
+            {/* For Docker icon or other SVG-based icons */}
+            {skill.isSpecial ? (
+              <div className="w-12 h-12 relative z-10 drop-shadow-md" 
+                   style={{ 
+                     filter: theme === 'dark' ? 'brightness(1.5)' : 'brightness(1)', 
+                     opacity: isHovered ? '0.9' : '1',
+                     transition: 'all 0.3s ease'
+                   }}>
+                <img 
+                  src={skill.icon} 
+                  alt={skill.name} 
+                  className="w-full h-full" 
+                  style={{ 
+                    fill: theme === 'dark' ? '#ffffff' : '#2496ED',
+                  }}
+                />
+              </div>
+            ) : (
+              <img src={skill.icon} alt={skill.name} className="w-12 h-12 relative z-10 drop-shadow-md" />
+            )}
+            
+            {/* Subtle glow effect behind icon when hovered */}
+            {isHovered && (
+              <div className="absolute inset-0 rounded-full blur-lg opacity-30 -z-10 scale-150"
+                style={{
+                  background: theme === 'dark'
+                    ? 'radial-gradient(circle, rgba(226, 232, 240, 0.2) 0%, rgba(226, 232, 240, 0) 70%)'
+                    : 'radial-gradient(circle, rgba(196, 93, 216, 0.2) 0%, rgba(196, 93, 216, 0) 70%)'
+                }}>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {/* Skill name with gradient on hover */}
+        <span className={`font-medium text-center transition-all duration-300 ${
+          isHovered 
+            ? 'bg-gradient-to-r from-eminence-600 to-eminence-500 dark:from-slate-300 dark:to-slate-100 text-transparent bg-clip-text font-bold scale-110' 
+            : 'text-eminence-700 dark:text-white'
+        }`}>
+          {skill.name}
+        </span>
+      </div>
+    </div>
+  );
+};
+
+// MagicUI inspired animated gradient title
+const AnimatedGradientTitle = ({ children, className = "" }) => {
+  const { theme } = useTheme();
+  
+  // Define gradient colors based on theme
+  const colorFrom = theme === 'dark' ? '#94A3B8' : '#C45DD8';
+  const colorTo = theme === 'dark' ? '#E2E8F0' : '#A93DBC';
+  
+  return (
+    <h3 
+      className={`relative inline-block text-center text-4xl sm:text-5xl font-bold text-transparent bg-clip-text animate-gradient-xy ${className}`}
+      style={{
+        backgroundImage: `linear-gradient(to right, ${colorFrom}, ${colorTo}, ${colorFrom})`,
+        backgroundSize: '200% auto',
+      }}
+    >
+      {children}
+      <div className="absolute -bottom-2 left-0 w-full h-[3px] bg-gradient-to-r from-eminence-500 via-eminence-400 to-eminence-500 dark:from-slate-500 dark:via-slate-300 dark:to-slate-500 transform animate-gradient-xy opacity-70"></div>
+    </h3>
+  );
+};
+
+// MagicUI inspired skill category card with warp effect
+const SkillCategoryCard = ({ icon, title, skills }) => {
+  const { theme } = useTheme();
+  return (
+    <div className="glass-card card-border-anim max-w-xs w-full h-full flex flex-col items-center text-center group p-5 flex-1">
+      <div>
+        <div className="mb-3">
+          <span className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-eminence-500 to-azure-500 shadow-md">
+            <span className="transition-transform duration-300 group-hover:scale-110 group-hover:animate-pulse-slow">
+              {icon}
+            </span>
+          </span>
+        </div>
+        <h4 className="text-lg font-bold text-eminence-700 dark:text-white mb-2">{title}</h4>
+      </div>
+      <div className="flex flex-wrap justify-center gap-2 mt-2">
+        {skills.map((skill, idx) => (
+          <span
+            key={idx}
+            className="px-3 py-1.5 rounded-full text-xs font-medium bg-eminence-50 dark:bg-slate-800 text-eminence-700 dark:text-slate-200 shadow-sm"
+          >
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const About = () => {
   const { theme } = useTheme();
   const [handwrittenText, setHandwrittenText] = useState("");
@@ -264,7 +393,65 @@ const About = () => {
     { name: "Node.js", icon: "https://img.icons8.com/color/48/nodejs.png" },
     { name: "MongoDB", icon: "https://img.icons8.com/color/48/mongodb.png" },
     { name: "Git", icon: "https://img.icons8.com/color/48/git.png" },
+    { 
+      name: "Docker", 
+      icon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBkPSJNNTAzLjIgMjI5LjhjLTMuMy01LjktOC0xMC42LTEzLjgtMTYuMS01LjktMy4zLTEzLjggOC0xMy44LTEzLjggMC0yMy4zLTUuMy02Ny43LTcyLjgtOTEgMTAuNi02Ni40LTI0LjUtOTAtMzguNC05Ni45LTgtMy4zLTE3LjgtMy4zLTI0LjUgMGwwIDBjLTUuMyA1LjMtMTAuNiAxMy44LTEwLjYgMjYuNCAwIDQxLjEtMTguNiA1MS43LTI0LjUgNjAuNi00MC4yLTEwLTgzLjQtMS4zLTkxIDIxLTYuMi04LjItNjMuMS01LjktNjYuNyAyOC42LTIxLjgtNS45LTQ1LjUtNi45LTQ3LjYgMTMuOC0yNy44IDEuMi0xMjMuNiA5Mi41LTIwLjIgMTY0LjIgMTEuMiAyMS4xIDI2LjEgNDMgNDIuOSA1Ny45IDM5LjEgNDUuNCA4OC42IDU3LjMgMTM3LjEgNTguNiA0Ny4yIDEuMyA5Ni42LTguMiAxNDQuOC00My4zIDM3LjMtMjYuNyA2OS4xLTc2LjQgNzUuNC0xMDguOCAxMS4zLTQxLjEgNC41LTU5LjYtMS4yLTcyLjEgNS4zLTIuOCAxMC4xLTYuMiAxMy40LTEwLjMgOS0xMC42IDEwLjYtMjYuNCA1LjMtMzQuNmwwLjEtMC4xek0xMzQuMiAzMTEuNCBjLTE3LjggMCAtMzIuNC0xNC42LTMyLjQtMzIuNCAwLTE3LjggMTQuNi0zMi40IDMyLjQtMzIuNCAxNy44IDAgMzIuNCAxNC42IDMyLjQgMzIuNCAwLjEgMTcuOC0xNC41IDMyLjQtMzIuNCAzMi40ek0zOTAuOSAxOTMgbC0wLjIgMCAxMy40IDEuOWM5LjUgMCAxOCAxMy4xIDE4IDI5LjMgMCAxMi4zLTYuNyAyMi4yLTEzLjQgMjIuMmwtMTQuMy0wLjctMS45LTEuMXYtNTEuM2wtMS42LTAuM3ptLTEzNS43LTMzLjcgYzAtOS42IDQuMS0xNy43IDEwLjMtMTcuNyA2LjIgMCAxMS4zIDguMyAxMC45IDE4LjEtMC40IDkuOC01LjIgMTcuNy0xMS4zIDE3LjctNC43LTAuMS0xMC0xMS4yLTkuOS0xOC4xek0yNTUuOSA0MDUuNCBjLTI0LjYgMC00Ni4zLTE4LjMtNDYuMy00Mi45IDAtMjQuNSAyMS43LTQyLjkgNDYuMy00Mi45IDI0LjYgMCA0Ni4zIDE4LjMgNDYuMyA0Mi45QzMwMi4yIDM4Ny02NzguMyA0MDUuNCAtMjYyLjMgNDA1LjR6Ii8+PC9zdmc+",
+      isSpecial: true 
+    },
     { name: "PHP", icon: "https://img.icons8.com/officel/48/php-logo.png" },
+  ];
+
+  // Skill categories for the new competences section
+  const skillCategories = [
+    {
+      title: "Frontend",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>,
+      skills: ["HTML", "CSS", "JavaScript", "React", "Angular"]
+    },
+    {
+      title: "CSS Frameworks",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+            </svg>,
+      skills: ["Bootstrap", "Tailwind CSS"]
+    },
+    {
+      title: "JavaScript Frameworks",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+            </svg>,
+      skills: ["React", "Angular"]
+    },
+    {
+      title: "Backend",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+            </svg>,
+      skills: ["PHP", "Node.js", "WordPress/CMS"]
+    },
+    {
+      title: "Backend Frameworks",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>,
+      skills: ["Express", "Symfony", "Hono", "Personal MVC"]
+    },
+    {
+      title: "Development Tools",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
+            </svg>,
+      skills: ["Git", "Docker", "VS Code", "Terminal"]
+    },
+    {
+      title: "Operating Systems",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>,
+      skills: ["Windows", "Linux", "macOS"]
+    }
   ];
 
   const experiences = [
@@ -487,23 +674,55 @@ const About = () => {
           </div>
         </div>
 
-        {/* Skills Section */}
-        <div>
-          <h3 className="text-3xl font-bold text-center mb-12 text-eminence-700 dark:text-white">
-            Compétences Techniques
-          </h3>
+        {/* Compétences Section - Using MagicUI-inspired components */}
+        <div className="mb-24">
+          <div className="text-center mb-12">
+            <AnimatedGradientTitle>
+              Compétences
+            </AnimatedGradientTitle>
+            <p className="mt-6 text-lg text-eminence-700 dark:text-slate-300 max-w-2xl mx-auto">
+              Une expertise variée en développement web et technologies modernes
+            </p>
+          </div>
+          
+          {/* Skill Categories Grid with MagicUI-inspired cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-stretch">
+            {skillCategories.map((category, index) => (
+              <SkillCategoryCard
+                key={index}
+                icon={category.icon}
+                title={category.title}
+                skills={category.skills}
+              />
+            ))}
+            
+            {/* Languages Card spanning full width */}
+            <div className="md:col-span-3">
+              <SkillCategoryCard 
+                icon={<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                </svg>}
+                title="Languages"
+                skills={languages.map(lang => `${lang.language} (${lang.level})`)}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Techniques Section - Now with animated cards */}
+        <div className="mb-24">
+          <div className="text-center mb-12">
+            <AnimatedGradientTitle>
+              Compétences Techniques
+            </AnimatedGradientTitle>
+            <p className="mt-6 text-lg text-eminence-700 dark:text-slate-300 max-w-2xl mx-auto">
+              Technologies et outils maîtrisés pour le développement web
+            </p>
+          </div>
           
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
             {skills.map((skill, index) => (
-              <div 
-                key={index} 
-                className="bg-white/80 dark:bg-slate-900/80 rounded-2xl p-6 shadow-md flex flex-col items-center justify-center transition-all hover:shadow-xl hover:scale-105 hover:-translate-y-2 backdrop-blur-md border border-white/20 dark:border-slate-700/60"
-              >
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-azure-100 to-azure-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center mb-4 shadow-sm border-0 dark:border dark:border-slate-600/40">
-                  <img src={skill.icon} alt={skill.name} className="w-12 h-12" />
-                </div>
-                <span className="text-eminence-700 dark:text-white font-medium text-center">{skill.name}</span>
-              </div>
+              <AnimatedSkillCard key={index} skill={skill} index={index} />
             ))}
           </div>
         </div>
